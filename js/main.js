@@ -1,137 +1,163 @@
 // =========================================================
-// Akemat Foundation — main.js
+// Akemat Foundation — SPA Logic Engine
 // =========================================================
 
-document.addEventListener('DOMContentLoaded', () => {
+const app = {
+  currentUser: null,
+  
+  // Data Dummy (Disimpan di memory/localStorage)
+  nurses: [
+    { id: 1, name: "Ns. Siti Aminah, S.Kep", type: "Perawatan Lansia", location: "Bogor, Jawa Barat", rate: 150000, exp: "5 Tahun" },
+    { id: 2, name: "Br. Budi Santoso, Amd.Kep", type: "Perawatan Pasca Operasi", location: "Depok, Jawa Barat", rate: 200000, exp: "8 Tahun" },
+    { id: 3, name: "Ns. Rina Melati, S.Kep", type: "Perawatan Ibu & Bayi", location: "Bogor, Jawa Barat", rate: 180000, exp: "3 Tahun" }
+  ],
+  
+  campaigns: [
+    { id: 1, title: "Bantu Pak Herman (Pasca Stroke) Pemulihan", target: 15000000, collected: 8500000, author: "Keluarga Herman" },
+    { id: 2, title: "Subsidi Kursi Roda untuk Lansia Dhuafa", target: 5000000, collected: 1200000, author: "Akemat Peduli" }
+  ],
 
-  /* ---------- Footer year ---------- */
-  const yearEl = document.getElementById('year');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  init() {
+    // Cek apakah ada data tersimpan
+    const savedUser = localStorage.getItem('akemat_user');
+    if (savedUser) {
+      this.currentUser = JSON.parse(savedUser);
+    }
+    const savedCamps = localStorage.getItem('akemat_campaigns');
+    if (savedCamps) {
+      this.campaigns = JSON.parse(savedCamps);
+    }
 
-  /* ---------- Mobile nav toggle ---------- */
-  const navToggle = document.getElementById('navToggle');
-  const nav = document.getElementById('primary-nav');
+    this.bindEvents();
+    this.updateNav();
+    this.navigate('home');
+  },
 
-  if (navToggle && nav) {
-    navToggle.addEventListener('click', () => {
-      const isOpen = nav.getAttribute('data-state') === 'open';
-      nav.setAttribute('data-state', isOpen ? 'closed' : 'open');
-      navToggle.setAttribute('aria-expanded', String(!isOpen));
-      navToggle.classList.toggle('is-open', !isOpen);
+  bindEvents() {
+    document.getElementById('authForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('authName').value;
+      const role = document.getElementById('authRole').value;
+      this.login(name, role);
     });
 
-    // Close menu after tapping a link (mobile)
-    nav.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        nav.setAttribute('data-state', 'closed');
-        navToggle.setAttribute('aria-expanded', 'false');
-        navToggle.classList.remove('is-open');
-      });
+    document.getElementById('createCampaignForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('campTitle').value;
+      const target = Number(document.getElementById('campTarget').value);
+      this.createCampaign(title, target);
     });
+  },
+
+  // --- ROUTING SYSTEM ---
+  navigate(viewId) {
+    document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+    document.querySelector(`[data-view="${viewId}"]`).classList.add('active');
+    
+    if (viewId === 'nurses') this.renderNurses();
+    if (viewId === 'campaigns') this.renderCampaigns();
+  },
+
+  routeDashboard() {
+    if (!this.currentUser) return this.navigate('auth');
+    
+    // Setel nama pengguna di semua span nama
+    document.querySelectorAll('.user-name').forEach(el => el.textContent = this.currentUser.name);
+    
+    // Arahkan ke dashboard sesuai role
+    this.navigate(`dashboard-${this.currentUser.role}`);
+  },
+
+  // --- AUTHENTICATION ---
+  login(name, role) {
+    this.currentUser = { name, role };
+    localStorage.setItem('akemat_user', JSON.stringify(this.currentUser));
+    this.updateNav();
+    this.routeDashboard();
+  },
+
+  logout() {
+    this.currentUser = null;
+    localStorage.removeItem('akemat_user');
+    this.updateNav();
+    this.navigate('home');
+  },
+
+  updateNav() {
+    const authLink = document.getElementById('nav-auth');
+    const dashLink = document.getElementById('nav-dashboard');
+    if (this.currentUser) {
+      authLink.style.display = 'none';
+      dashLink.style.display = 'inline-block';
+    } else {
+      authLink.style.display = 'inline-block';
+      dashLink.style.display = 'none';
+    }
+  },
+
+  // --- RENDERERS ---
+  formatRp(angka) {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+  },
+
+  renderNurses() {
+    const container = document.getElementById('nurseList');
+    container.innerHTML = this.nurses.map(nurse => `
+      <div class="doc-card">
+        <div class="doc-header">
+          <div class="doc-avatar">${nurse.name.charAt(0)}</div>
+          <div class="doc-info">
+            <h3>${nurse.name}</h3>
+            <span>${nurse.type} • Pengalaman ${nurse.exp}</span>
+            <span>📍 ${nurse.location}</span>
+          </div>
+        </div>
+        <div class="doc-rate">${this.formatRp(nurse.rate)} / kunjungan</div>
+        <button class="btn btn-outline btn-sm" onclick="alert('Fitur pemesanan akan diarahkan ke WhatsApp Perawat')">Pesan Sekarang</button>
+      </div>
+    `).join('');
+  },
+
+  renderCampaigns() {
+    const container = document.getElementById('campaignList');
+    container.innerHTML = this.campaigns.map(camp => {
+      const percentage = Math.min((camp.collected / camp.target) * 100, 100);
+      return `
+        <div class="camp-card">
+          <div class="camp-img">Foto Kampanye</div>
+          <div class="camp-body">
+            <h3>${camp.title}</h3>
+            <span style="font-size:0.85rem; color:var(--color-ink-soft)">Oleh: ${camp.author}</span>
+            <div class="progress-bg">
+              <div class="progress-bar" style="width: ${percentage}%"></div>
+            </div>
+            <div class="camp-stats">
+              <span>Terkumpul: ${this.formatRp(camp.collected)}</span>
+            </div>
+            <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="alert('Fitur pembayaran donasi sedang dikembangkan')">Donasi Sekarang</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  // --- CAMPAIGNER ACTIONS ---
+  createCampaign(title, target) {
+    const newCamp = {
+      id: Date.now(),
+      title,
+      target,
+      collected: 0,
+      author: this.currentUser.name
+    };
+    this.campaigns.unshift(newCamp);
+    localStorage.setItem('akemat_campaigns', JSON.stringify(this.campaigns));
+    
+    document.getElementById('createCampaignForm').reset();
+    alert('Kampanye berhasil diterbitkan!');
+    this.navigate('campaigns'); // Bawa user lihat hasil karyanya
   }
+};
 
-  /* ---------- Scroll reveal ---------- */
-  const revealEls = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && revealEls.length) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-
-    revealEls.forEach((el) => observer.observe(el));
-  } else {
-    // Fallback: show everything immediately
-    revealEls.forEach((el) => el.classList.add('is-visible'));
-  }
-
-  /* ---------- Donation tiers ---------- */
-  const tierCards = document.querySelectorAll('.tier-card');
-  const donateDesc = document.getElementById('donateDesc');
-  const customAmountInput = document.getElementById('customAmount');
-  const customAmountBtn = document.getElementById('customAmountBtn');
-
-  function selectTier(card) {
-    tierCards.forEach((c) => c.classList.remove('is-active'));
-    card.classList.add('is-active');
-    if (donateDesc) donateDesc.textContent = card.dataset.desc;
-  }
-
-  tierCards.forEach((card) => {
-    card.addEventListener('click', () => selectTier(card));
-  });
-
-  if (customAmountBtn && customAmountInput) {
-    customAmountBtn.addEventListener('click', () => {
-      const value = Number(customAmountInput.value);
-      if (!value || value <= 0) {
-        customAmountInput.focus();
-        return;
-      }
-      tierCards.forEach((c) => c.classList.remove('is-active'));
-      const formatted = value.toLocaleString('id-ID');
-      if (donateDesc) {
-        donateDesc.textContent = `Terima kasih! Donasi sebesar Rp ${formatted} sangat berarti bagi keluarga yang kami layani. Silakan transfer ke rekening di bawah ini.`;
-      }
-    });
-  }
-
-  /* ---------- Copy bank account number ---------- */
-  const copyBankBtn = document.getElementById('copyBankBtn');
-  if (copyBankBtn) {
-    copyBankBtn.addEventListener('click', async () => {
-      const accountNumber = copyBankBtn.dataset.account || '';
-      const originalLabel = copyBankBtn.textContent;
-
-      try {
-        await navigator.clipboard.writeText(accountNumber);
-        copyBankBtn.textContent = 'Nomor disalin!';
-      } catch (err) {
-        copyBankBtn.textContent = 'Gagal menyalin, salin manual';
-      }
-
-      setTimeout(() => {
-        copyBankBtn.textContent = originalLabel;
-      }, 2200);
-    });
-  }
-
-  /* ---------- Forms (demo only — no backend) ---------- */
-  // NOTE: Ini situs statis. Untuk menerima data formulir secara nyata,
-  // hubungkan elemen <form> ke layanan seperti Formspree, Getform,
-  // atau Google Apps Script, lalu sesuaikan kode di bawah ini.
-
-  function handleDemoSubmit(formId, statusId, successMessage) {
-    const form = document.getElementById(formId);
-    const status = document.getElementById(statusId);
-    if (!form || !status) return;
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-
-      status.textContent = successMessage;
-      form.reset();
-    });
-  }
-
-  handleDemoSubmit(
-    'requestForm',
-    'requestStatus',
-    'Terima kasih! Permintaan Anda sudah kami terima. Tim Akemat akan menghubungi Anda via WhatsApp dalam 1–2 hari kerja.'
-  );
-
-  handleDemoSubmit(
-    'contactForm',
-    'contactStatus',
-    'Terima kasih sudah menghubungi kami. Pesan Anda sudah terkirim dan akan kami balas secepatnya.'
-  );
-
-});
+// Jalankan aplikasi saat halaman dimuat
+document.addEventListener('DOMContentLoaded', () => app.init());
