@@ -3,494 +3,126 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Akemat Foundation — Layanan Perawat &amp; Donasi Kemanusiaan</title>
-  <meta name="description" content="Akemat Foundation menghubungkan keluarga dengan perawat profesional untuk perawatan di rumah, didanai oleh donasi masyarakat. Pesan perawat atau berdonasi sekarang." />
-
-  <!-- Menandai bahwa JS aktif; tanpa ini, konten .reveal tetap tampil sepenuhnya -->
-  <script>document.documentElement.classList.add('js-enabled');</script>
-
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <title>Akemat Foundation — Layanan Perawat & Donasi Kemanusiaan</title>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%231F4D3F'/%3E%3Cpath d='M24 36c-7-5.5-13-10.8-13-17A8 8 0 0 1 24 13a8 8 0 0 1 13 6c0 6.2-6 11.5-13 17z' fill='%23F2A541'/%3E%3C/svg%3E" />
-
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <a class="skip-link" href="#main">Lewati ke konten utama</a>
 
-  <!-- ============ HEADER ============ -->
   <header class="site-header">
     <div class="container header-inner">
-      <a href="#beranda" class="logo" aria-label="Akemat Foundation, kembali ke beranda">
-        <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">
+      <a href="#" class="logo" onclick="app.navigate('home')">
+        <svg class="logo-mark" viewBox="0 0 48 48">
           <rect width="48" height="48" rx="10" fill="#1F4D3F" />
           <path d="M24 36c-7-5.5-13-10.8-13-17A8 8 0 0 1 24 13a8 8 0 0 1 13 6c0 6.2-6 11.5-13 17z" fill="#F2A541" />
-          <path d="M20 22h8M24 18v8" stroke="#1F4D3F" stroke-width="2.4" stroke-linecap="round" />
         </svg>
         <span class="logo-text">Akemat <strong>Foundation</strong></span>
       </a>
-
-      <nav class="nav" id="primary-nav" data-state="closed">
+      <nav class="nav">
         <ul>
-          <li><a href="#tentang">Tentang Kami</a></li>
-          <li><a href="#cara-kerja">Cara Kerja</a></li>
-          <li><a href="#pesan-perawat">Pesan Perawat</a></li>
-          <li><a href="#donasi">Donasi</a></li>
-          <li><a href="#cerita">Cerita Dampak</a></li>
-          <li><a href="#kontak">Kontak</a></li>
+          <li><a href="#" onclick="app.navigate('home')">Beranda</a></li>
+          <li><a href="#" onclick="app.navigate('nurses')">Cari Perawat</a></li>
+          <li><a href="#" onclick="app.navigate('campaigns')">Donasi</a></li>
+          <li id="nav-auth"><a href="#" onclick="app.navigate('auth')" class="btn btn-primary btn-sm">Login / Daftar</a></li>
+          <li id="nav-dashboard" style="display: none;"><a href="#" onclick="app.routeDashboard()" class="btn btn-accent btn-sm">Dashboard Saya</a></li>
         </ul>
-        <a href="#donasi" class="btn btn-accent nav-cta">Donasi sekarang</a>
       </nav>
-
-      <button class="nav-toggle" id="navToggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="primary-nav">
-        <span></span><span></span><span></span>
-      </button>
     </div>
   </header>
 
   <main id="main">
-    <!-- ============ HERO ============ -->
-    <section class="hero" id="beranda">
-      <div class="container hero-inner">
-        <div class="hero-content reveal">
-          <p class="eyebrow">Yayasan kemanusiaan &bull; melayani sejak 2019</p>
-          <h1>Perawat tepercaya, hadir di rumah karena kepedulian Anda</h1>
-          <p class="hero-sub">
-            Akemat Foundation mempertemukan keluarga yang membutuhkan perawatan di rumah dengan
-            perawat profesional yang sudah terlatih dan terverifikasi. Seluruh layanan kami
-            disubsidi oleh donasi dari masyarakat.
-          </p>
-          <div class="hero-actions">
-            <a href="#pesan-perawat" class="btn btn-primary">Pesan perawat</a>
-            <a href="#donasi" class="btn btn-outline">Donasi sekarang</a>
-          </div>
-        </div>
-
-        <div class="hero-art reveal" aria-hidden="true">
-          <svg viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="210" cy="195" r="175" fill="#E3EFE7" />
-            <polygon points="60,205 175,110 290,205" fill="#3A7363" />
-            <rect x="80" y="205" width="190" height="130" rx="8" fill="#1F4D3F" />
-            <rect x="195" y="245" width="48" height="90" rx="4" fill="#FBF7F1" />
-            <rect x="105" y="240" width="46" height="46" rx="4" fill="#F2A541" />
-            <rect x="105" y="240" width="46" height="46" rx="4" fill="none" stroke="#1F4D3F" stroke-width="3" />
-            <line x1="128" y1="240" x2="128" y2="286" stroke="#1F4D3F" stroke-width="3" />
-            <line x1="105" y1="263" x2="151" y2="263" stroke="#1F4D3F" stroke-width="3" />
-
-            <!-- caregiver figure -->
-            <circle cx="320" cy="210" r="24" fill="#E8714A" />
-            <rect x="300" y="238" width="40" height="78" rx="16" fill="#E8714A" />
-            <rect x="286" y="252" width="68" height="16" rx="8" fill="#1F4D3F" />
-
-            <!-- floating heart -->
-            <path d="M255 150c-5-7-17-2-9 9l9 9 9-9c8-11-4-16-9-9z" fill="#F2A541" />
-            <!-- small medical crosses -->
-            <g stroke="#3A7363" stroke-width="4" stroke-linecap="round">
-              <path d="M70 90h18M79 81v18" />
-              <path d="M340 320h16M348 312v16" />
-            </g>
-            <circle cx="60" cy="290" r="6" fill="#F2A541" />
-            <circle cx="345" cy="120" r="5" fill="#E8714A" />
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ STATS ============ -->
-    <section class="stats">
-      <div class="container stats-grid">
-        <div class="stat reveal">
-          <span class="stat-num">500+</span>
-          <span class="stat-label">Keluarga terbantu</span>
-        </div>
-        <div class="stat reveal">
-          <span class="stat-num">150+</span>
-          <span class="stat-label">Perawat bermitra</span>
-        </div>
-        <div class="stat reveal">
-          <span class="stat-num">28</span>
-          <span class="stat-label">Kota terjangkau</span>
-        </div>
-        <div class="stat reveal">
-          <span class="stat-num">6</span>
-          <span class="stat-label">Tahun mengabdi</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ TENTANG KAMI ============ -->
-    <section class="about" id="tentang">
-      <div class="container about-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">Tentang kami</p>
-          <h2>Setiap orang berhak mendapat perawatan yang layak</h2>
-          <p class="lead">
-            Akemat Foundation berdiri dari keyakinan sederhana: keterbatasan biaya tidak boleh
-            menjadi alasan seseorang tidak mendapat perawatan yang mereka butuhkan. Kami menjadi
-            jembatan antara perawat profesional, keluarga yang membutuhkan, dan donatur yang
-            ingin membantu.
-          </p>
-        </div>
-
-        <div class="card-grid reveal">
-          <div class="info-card">
-            <span class="info-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 11 12 3l9 8" />
-                <path d="M5 10v10h14V10" />
-                <path d="M10 20v-6h4v6" />
-              </svg>
-            </span>
-            <h3>Perawatan di rumah</h3>
-            <p>Perawat datang langsung ke rumah untuk merawat lansia, pasien pasca operasi, ibu &amp; bayi, hingga penyakit kronis.</p>
-          </div>
-
-          <div class="info-card">
-            <span class="info-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h6a2 2 0 0 1 2 2v14a3 3 0 0 0-3-3H4z" />
-                <path d="M20 4h-6a2 2 0 0 0-2 2v14a3 3 0 0 1 3-3h5z" />
-              </svg>
-            </span>
-            <h3>Pelatihan perawat</h3>
-            <p>Kami membekali perawat mitra dengan pelatihan klinis dan etika layanan agar standar perawatan tetap terjaga.</p>
-          </div>
-
-          <div class="info-card">
-            <span class="info-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 21s-7-4.35-9-9a4.5 4.5 0 0 1 8-3 4.5 4.5 0 0 1 8 3c-1 4.5-7 9-7 9z" />
-              </svg>
-            </span>
-            <h3>Bantuan biaya perawatan</h3>
-            <p>Donasi yang masuk digunakan untuk mensubsidi biaya layanan bagi keluarga yang membutuhkan dukungan finansial.</p>
+    
+    <section data-view="home" class="view active">
+      <div class="hero">
+        <div class="container hero-inner">
+          <div class="hero-content">
+            <p class="eyebrow">Platform Kemanusiaan Terintegrasi</p>
+            <h1>Satu wadah untuk merawat dan peduli</h1>
+            <p class="hero-sub">Pesan perawat profesional ke rumah Anda, bantu mereka yang membutuhkan biaya pengobatan, atau bergabunglah sebagai relawan dan tenaga medis.</p>
+            <div class="hero-actions">
+              <button onclick="app.navigate('nurses')" class="btn btn-primary">Pesan Perawat</button>
+              <button onclick="app.navigate('campaigns')" class="btn btn-outline">Mulai Berdonasi</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ CARA KERJA ============ -->
-    <section class="how" id="cara-kerja">
-      <div class="container">
-        <div class="section-head reveal">
-          <p class="eyebrow">Cara kerja</p>
-          <h2>Tiga langkah menuju perawatan di rumah</h2>
-        </div>
-
-        <ol class="steps reveal">
-          <li class="step">
-            <span class="step-num">01</span>
-            <h3>Isi formulir permintaan</h3>
-            <p>Ceritakan kondisi keluarga Anda, jenis perawatan yang dibutuhkan, dan lokasi tempat tinggal.</p>
-          </li>
-          <li class="step">
-            <span class="step-num">02</span>
-            <h3>Tim kami mencocokkan perawat</h3>
-            <p>Kami mencarikan perawat yang sesuai dengan kebutuhan, lokasi, dan jadwal Anda dalam 1–2 hari kerja.</p>
-          </li>
-          <li class="step">
-            <span class="step-num">03</span>
-            <h3>Perawat tiba di rumah</h3>
-            <p>Perawatan dimulai sesuai jadwal yang disepakati, dengan pemantauan rutin dari tim Akemat.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- ============ PESAN PERAWAT ============ -->
-    <section class="request" id="pesan-perawat">
-      <div class="container request-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">Pesan perawat</p>
-          <h2>Beri tahu kami kebutuhan keluarga Anda</h2>
-          <p class="lead">
-            Lengkapi formulir berikut. Tim kami akan menghubungi Anda melalui WhatsApp untuk
-            menjadwalkan kunjungan dan mendiskusikan biaya, termasuk kemungkinan subsidi.
-          </p>
-        </div>
-
-        <form class="card form-card reveal" id="requestForm" novalidate>
-          <!--
-            Situs ini statis (tanpa server). Untuk menerima data formulir,
-            hubungkan form ini ke layanan seperti Formspree / Getform, atau
-            arahkan ke Google Form. Ganti atribut "action" di bawah ini.
-          -->
-          <div class="form-grid">
-            <div class="field">
-              <label for="namaLengkap">Nama lengkap</label>
-              <input type="text" id="namaLengkap" name="namaLengkap" required autocomplete="name" />
-            </div>
-            <div class="field">
-              <label for="noWhatsapp">Nomor WhatsApp</label>
-              <input type="tel" id="noWhatsapp" name="noWhatsapp" placeholder="08xx-xxxx-xxxx" required autocomplete="tel" />
-            </div>
-            <div class="field">
-              <label for="lokasi">Kota / alamat</label>
-              <input type="text" id="lokasi" name="lokasi" placeholder="Contoh: Bogor, Jawa Barat" required autocomplete="address-level2" />
-            </div>
-            <div class="field">
-              <label for="jenisLayanan">Jenis layanan</label>
-              <select id="jenisLayanan" name="jenisLayanan" required>
-                <option value="" disabled selected>Pilih jenis layanan</option>
-                <option value="Perawatan Lansia">Perawatan lansia</option>
-                <option value="Perawatan Pasca Operasi">Perawatan pasca operasi</option>
-                <option value="Perawatan Ibu & Bayi">Perawatan ibu &amp; bayi</option>
-                <option value="Perawatan Penyakit Kronis">Perawatan penyakit kronis</option>
-                <option value="Lainnya">Lainnya</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="jadwal">Jadwal yang diinginkan</label>
-              <input type="text" id="jadwal" name="jadwal" placeholder="Contoh: Senin–Jumat, pagi" />
-            </div>
-            <div class="field field-full">
-              <label for="catatan">Catatan tambahan</label>
-              <textarea id="catatan" name="catatan" rows="4" placeholder="Ceritakan kondisi pasien atau hal lain yang perlu kami ketahui"></textarea>
-            </div>
+    <section data-view="auth" class="view hidden container" style="padding: 60px 24px; max-width: 500px;">
+      <div class="card">
+        <h2 style="text-align:center;">Masuk / Daftar</h2>
+        <form id="authForm" class="form-grid" style="grid-template-columns: 1fr;">
+          <div class="field">
+            <label>Nama Lengkap</label>
+            <input type="text" id="authName" required placeholder="Nama Anda" />
           </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Kirim permintaan</button>
-            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="btn btn-outline">Atau hubungi via WhatsApp</a>
+          <div class="field">
+            <label>Pilih Peran Anda</label>
+            <select id="authRole" required>
+              <option value="user">Pengguna (Pesan Perawat / Donatur)</option>
+              <option value="nurse">Perawat (Menawarkan Jasa)</option>
+              <option value="campaigner">Penggalang Dana (Open Donasi)</option>
+            </select>
           </div>
-
-          <p class="form-status" id="requestStatus" role="status" aria-live="polite"></p>
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">Masuk ke Dashboard</button>
         </form>
       </div>
     </section>
 
-    <!-- ============ DONASI ============ -->
-    <section class="donate" id="donasi">
-      <div class="container donate-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">Donasi</p>
-          <h2>Donasi Anda, layanan perawatan untuk mereka</h2>
-          <p class="lead">
-            100% donasi disalurkan untuk operasional layanan: honor perawat, pelatihan, dan
-            subsidi biaya bagi keluarga kurang mampu. Pilih nominal di bawah, atau tentukan
-            jumlah Anda sendiri.
-          </p>
-        </div>
-
-        <div class="donate-grid reveal">
-          <div class="donate-art" aria-hidden="true">
-            <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="160" cy="160" r="150" fill="#FBEFD9" />
-              <path d="M100 190c-30-10-40-50-15-72 22-19 50-8 60 12 10-20 38-31 60-12 25 22 15 62-15 72-15 25-45 45-45 45s-30-20-45-45z" fill="#F2A541" />
-              <path d="M160 160c0-22 30-22 30 0-10 14-30 28-30 28s-20-14-30-28c0-22 30-22 30 0z" fill="#1F4D3F" transform="translate(0,-60)" />
-              <g stroke="#3A7363" stroke-width="4" stroke-linecap="round">
-                <path d="M250 70h18M259 61v18" />
-                <path d="M55 240h16M63 232v16" />
-              </g>
-            </svg>
-          </div>
-
-          <div class="donate-options">
-            <button type="button" class="tier-card" data-amount="100.000" data-desc="Rp 100.000 membantu mendanai 1 hari kunjungan perawat ke rumah pasien.">
-              <span class="tier-amount">Rp 100.000</span>
-              <span class="tier-desc">1 hari kunjungan perawat</span>
-            </button>
-            <button type="button" class="tier-card" data-amount="500.000" data-desc="Rp 500.000 membantu mendanai pelatihan dasar untuk 1 perawat baru.">
-              <span class="tier-amount">Rp 500.000</span>
-              <span class="tier-desc">Pelatihan dasar 1 perawat</span>
-            </button>
-            <button type="button" class="tier-card" data-amount="1.500.000" data-desc="Rp 1.500.000 membantu mendanai perawatan penuh selama 1 minggu untuk 1 keluarga.">
-              <span class="tier-amount">Rp 1.500.000</span>
-              <span class="tier-desc">1 minggu perawatan penuh</span>
-            </button>
-
-            <div class="tier-custom">
-              <label for="customAmount">Nominal lainnya (Rp)</label>
-              <div class="tier-custom-row">
-                <input type="number" id="customAmount" min="10000" step="10000" placeholder="Contoh: 250000" />
-                <button type="button" class="btn btn-accent" id="customAmountBtn">Pilih</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card donate-detail reveal" id="donateDetail">
-          <p class="donate-desc" id="donateDesc">
-            Pilih salah satu nominal di atas untuk melihat dampaknya, lalu transfer ke rekening
-            di bawah ini.
-          </p>
-
-          <div class="bank-card">
-            <div class="bank-info">
-              <span class="bank-label">Transfer bank</span>
-              <span class="bank-name">Bank Contoh Indonesia</span>
-              <span class="bank-number" id="bankNumber">1234 5678 9012</span>
-              <span class="bank-owner">a.n. Yayasan Akemat Peduli</span>
-            </div>
-            <button type="button" class="btn btn-outline" id="copyBankBtn" data-account="1234567890012">
-              Salin nomor rekening
-            </button>
-          </div>
-
-          <p class="donate-note">
-            Sudah transfer? Kirim bukti transfer melalui WhatsApp agar kami dapat mengirimkan
-            ucapan terima kasih dan laporan penyaluran donasi Anda.
-          </p>
-          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="btn btn-primary">Konfirmasi donasi via WhatsApp</a>
-        </div>
+    <section data-view="nurses" class="view hidden container" style="padding: 60px 24px;">
+      <div class="section-head">
+        <p class="eyebrow">Layanan Homecare</p>
+        <h2>Temukan Perawat Profesional</h2>
       </div>
+      <div class="grid-list" id="nurseList"></div>
     </section>
 
-    <!-- ============ CERITA DAMPAK ============ -->
-    <section class="stories" id="cerita">
-      <div class="container">
-        <div class="section-head reveal">
-          <p class="eyebrow">Cerita dampak</p>
-          <h2>Cerita dari keluarga yang kami layani</h2>
-        </div>
-
-        <div class="story-grid reveal">
-          <figure class="story-card">
-            <blockquote>
-              "Perawat dari Akemat sangat sabar mendampingi ibu saya pasca stroke. Setiap minggu
-              ada laporan perkembangan, jadi kami yang bekerja di luar kota tetap merasa tenang."
-            </blockquote>
-            <figcaption>Keluarga Bapak H., Bogor</figcaption>
-          </figure>
-
-          <figure class="story-card">
-            <blockquote>
-              "Saya tidak menyangka biaya perawatan pasca operasi bisa terbantu sebagian lewat
-              program subsidi. Prosesnya juga jelas, mulai dari pendaftaran sampai perawat datang."
-            </blockquote>
-            <figcaption>Ibu R., Depok</figcaption>
-          </figure>
-
-          <figure class="story-card">
-            <blockquote>
-              "Sebagai perawat mitra, pelatihan dari Akemat membantu saya lebih percaya diri
-              menangani perawatan lansia di rumah, bukan hanya di rumah sakit."
-            </blockquote>
-            <figcaption>Perawat mitra, Tangerang</figcaption>
-          </figure>
-        </div>
+    <section data-view="campaigns" class="view hidden container" style="padding: 60px 24px;">
+      <div class="section-head">
+        <p class="eyebrow">Bantu Sesama</p>
+        <h2>Program Donasi Mendesak</h2>
       </div>
+      <div class="grid-list" id="campaignList"></div>
     </section>
 
-    <!-- ============ KONTAK ============ -->
-    <section class="contact" id="kontak">
-      <div class="container contact-inner">
-        <div class="contact-info reveal">
-          <p class="eyebrow">Kontak</p>
-          <h2>Ada pertanyaan? Hubungi kami</h2>
-          <p class="lead">
-            Tim kami siap membantu menjawab pertanyaan tentang layanan perawat, donasi, maupun
-            kerja sama kemitraan.
-          </p>
+    <section data-view="dashboard-user" class="view hidden container" style="padding: 60px 24px;">
+      <h2>Halo, <span class="user-name"></span></h2>
+      <p class="eyebrow">Dashboard Pengguna</p>
+      <div class="card" style="margin-bottom: 24px;">
+        <h3>Riwayat Pemesanan Perawat</h3>
+        <p>Belum ada jadwal aktif.</p>
+        <button onclick="app.navigate('nurses')" class="btn btn-outline btn-sm">Cari Perawat</button>
+      </div>
+      <button onclick="app.logout()" class="btn btn-accent btn-sm">Keluar</button>
+    </section>
 
-          <ul class="contact-list">
-            <li>
-              <span class="contact-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
-              </span>
-              <span>Jl. Contoh Raya No. 123, Bogor, Jawa Barat, Indonesia</span>
-            </li>
-            <li>
-              <span class="contact-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.99.36 1.96.69 2.89a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.19-1.27a2 2 0 0 1 2.11-.45c.93.33 1.9.56 2.89.69A2 2 0 0 1 22 16.92z" /></svg>
-              </span>
-              <span>+62 812-3456-7890 (WhatsApp)</span>
-            </li>
-            <li>
-              <span class="contact-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" /><path d="m4 6 8 7 8-7" /></svg>
-              </span>
-              <span>info@akematfoundation.org</span>
-            </li>
-            <li>
-              <span class="contact-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
-              </span>
-              <span>Senin–Sabtu, 08.00–17.00 WIB</span>
-            </li>
-          </ul>
-        </div>
+    <section data-view="dashboard-nurse" class="view hidden container" style="padding: 60px 24px;">
+      <h2>Halo, <span class="user-name"></span></h2>
+      <p class="eyebrow">Dashboard Perawat</p>
+      <div class="card" style="margin-bottom: 24px;">
+        <h3>Permintaan Layanan Baru</h3>
+        <p>Belum ada pasien yang memesan jasa Anda saat ini.</p>
+      </div>
+      <button onclick="app.logout()" class="btn btn-accent btn-sm">Keluar</button>
+    </section>
 
-        <form class="card form-card reveal" id="contactForm" novalidate>
-          <!-- Sambungkan ke layanan form pihak ketiga (Formspree, dll) bila perlu -->
-          <div class="form-grid">
-            <div class="field">
-              <label for="contactNama">Nama</label>
-              <input type="text" id="contactNama" name="contactNama" required autocomplete="name" />
-            </div>
-            <div class="field">
-              <label for="contactEmail">Email</label>
-              <input type="email" id="contactEmail" name="contactEmail" required autocomplete="email" />
-            </div>
-            <div class="field field-full">
-              <label for="contactPesan">Pesan</label>
-              <textarea id="contactPesan" name="contactPesan" rows="4" required></textarea>
-            </div>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Kirim pesan</button>
-          </div>
-          <p class="form-status" id="contactStatus" role="status" aria-live="polite"></p>
+    <section data-view="dashboard-campaigner" class="view hidden container" style="padding: 60px 24px;">
+      <h2>Halo, <span class="user-name"></span></h2>
+      <p class="eyebrow">Dashboard Penggalang Dana</p>
+      <div class="card" style="margin-bottom: 24px;">
+        <h3>Buat Kampanye Donasi Baru</h3>
+        <form id="createCampaignForm" class="form-grid" style="margin-top:16px;">
+          <div class="field"><label>Judul Kampanye</label><input type="text" id="campTitle" required></div>
+          <div class="field"><label>Target Dana (Rp)</label><input type="number" id="campTarget" required></div>
+          <button type="submit" class="btn btn-primary" style="grid-column: 1 / -1;">Terbitkan Kampanye</button>
         </form>
       </div>
+      <div id="myCampaignsList"></div>
+      <button onclick="app.logout()" class="btn btn-accent btn-sm" style="margin-top:20px;">Keluar</button>
     </section>
+
   </main>
-
-  <!-- ============ FOOTER ============ -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <a href="#beranda" class="logo logo-footer" aria-label="Akemat Foundation, kembali ke beranda">
-          <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">
-            <rect width="48" height="48" rx="10" fill="#F2A541" />
-            <path d="M24 36c-7-5.5-13-10.8-13-17A8 8 0 0 1 24 13a8 8 0 0 1 13 6c0 6.2-6 11.5-13 17z" fill="#FBF7F1" />
-          </svg>
-          <span class="logo-text">Akemat <strong>Foundation</strong></span>
-        </a>
-        <p>Menghadirkan perawat tepercaya bagi keluarga yang membutuhkan, didukung oleh donasi masyarakat.</p>
-
-        <div class="social-links">
-          <a href="#" aria-label="Instagram Akemat Foundation" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
-          </a>
-          <a href="#" aria-label="Facebook Akemat Foundation" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8h2V5h-2a4 4 0 0 0-4 4v2H9v3h2v6h3v-6h2.2l.8-3H14V9c0-.6.4-1 1-1z" /></svg>
-          </a>
-          <a href="#" aria-label="YouTube Akemat Foundation" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="3" /><path d="M11 9.5v5l4-2.5z" fill="currentColor" stroke="none" /></svg>
-          </a>
-        </div>
-      </div>
-
-      <nav class="footer-nav" aria-label="Tautan footer">
-        <h3>Jelajahi</h3>
-        <ul>
-          <li><a href="#tentang">Tentang kami</a></li>
-          <li><a href="#cara-kerja">Cara kerja</a></li>
-          <li><a href="#pesan-perawat">Pesan perawat</a></li>
-          <li><a href="#donasi">Donasi</a></li>
-          <li><a href="#cerita">Cerita dampak</a></li>
-          <li><a href="#kontak">Kontak</a></li>
-        </ul>
-      </nav>
-
-      <div class="footer-cta">
-        <h3>Mulai sekarang</h3>
-        <p>Butuh perawat untuk keluarga Anda, atau ingin membantu sesama?</p>
-        <a href="#pesan-perawat" class="btn btn-outline btn-sm">Pesan perawat</a>
-        <a href="#donasi" class="btn btn-accent btn-sm">Donasi sekarang</a>
-      </div>
-    </div>
-
-    <div class="container footer-bottom">
-      <p>&copy; <span id="year"></span> Akemat Foundation. Semua hak cipta dilindungi.</p>
-      <p class="footer-note">Situs ini contoh template — lengkapi data rekening, kontak, dan formulir sebelum dipublikasikan.</p>
-    </div>
-  </footer>
-
+  
   <script src="js/main.js"></script>
 </body>
 </html>
